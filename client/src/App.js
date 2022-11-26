@@ -3,6 +3,8 @@ import Login from './views/Login';
 import { makeStyles } from '@mui/styles';
 import { clsx } from 'clsx';
 import Register from './views/Register';
+import UserBar from './components/UserBar';
+import MainScreen from './views/MainScreen';
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/main" element={<MainScreen />} />
         </Routes>
       </div>
     </div>
