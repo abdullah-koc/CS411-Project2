@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './views/Login';
 import { makeStyles } from '@mui/styles';
 import { clsx } from 'clsx';
+import Register from './views/Register';
 
 const useStyles = makeStyles({
   root: {
@@ -24,6 +25,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </div>
