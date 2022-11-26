@@ -77,15 +77,27 @@ const Login = () => {
           variant="standard"
         />
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "6%" }}>
-        <Button
-          variant="contained"
-          size="large"
-          style={{ backgroundColor: Colors.primary_color }}
-          onClick={handleLogin}
-        >
-          Login
-        </Button>
+      <Grid container>
+        <Grid item xs={1} style={{ marginTop: "6%" }}>
+          <Button
+            variant="contained"
+            size="large"
+            style={{ backgroundColor: Colors.primary_color }}
+            onClick={handleLogin}
+          >
+            Login
+          </Button>
+        </Grid>
+        <Grid item xs={3} style={{ marginTop: "6%" }}>
+          <Button
+            variant="outlined"
+            size="large"
+            style={{ backgroundColor: Colors.grey }}
+            onClick={() => navigate("/register")}
+          >
+            Don't you have an account?
+          </Button>
+        </Grid>
       </Grid>
       <Grid item xs={12} style={{ marginTop: "6%" }}>
         <Button
