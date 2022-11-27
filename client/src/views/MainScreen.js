@@ -5,6 +5,9 @@ import { makeStyles } from "@mui/styles";
 import Colors from "../utils/Color";
 import MessageBar from '../components/MessageBar';
 import SearchBar from '../components/SearchBar';
+import MessageScreenBar from '../components/MessageScreenBar';
+import TextMessageBar from '../components/TextMessageBar';
+import Chats from '../components/Chats';
 
 
 const useStyles = makeStyles({
@@ -28,6 +31,11 @@ const MainScreen = () => {
           <UserBar />
           <SearchBar />
           <MessageBar />
+        </Grid>
+        <Grid item xs={8}>
+          <MessageScreenBar />
+          <Chats />
+          <TextMessageBar />
         </Grid>
       </Grid>
     </div>
