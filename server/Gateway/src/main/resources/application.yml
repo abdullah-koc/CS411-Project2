@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Gateway
+  cloud:
+    gateway:
+      routes:
+        - id: AuthService
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/**
+

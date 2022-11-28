@@ -42,7 +42,6 @@ public class AuthenticationService implements IAuthenticationService
         {
             throw new RuntimeException("This user already exists.");
         }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = UserMapper.INSTANCE.convertToUser(userSignupDto);
         String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
