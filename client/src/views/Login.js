@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, InputAdornment, Grid, Button } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import Colors from "../utils/Color";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("userInfo")) {
+      navigate("/main")
+    }
+  }, [])
 
   const handleForgetPassword = () => {
     if (email === "") {
@@ -20,6 +27,19 @@ const Login = () => {
   const handleLogin = () => {
     if (email === "" || password === "") {
       alert("Please fill all the fields");
+    }
+    else {
+      const info = {
+        email: email,
+        password: password
+      }
+      axios.post("http://localhost:8080/auth/login", info)
+        .then(res => {
+          localStorage.setItem("userInfo", JSON.stringify(res.data))
+          alert("Successfully logged in")
+          navigate("/main")
+        })
+        .catch(err => alert("Wrong username or password"))
     }
   };
   return (
@@ -99,16 +119,7 @@ const Login = () => {
           </Button>
         </Grid>
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "6%" }}>
-        <Button
-          variant="outlined"
-          size="small"
-          color="warning"
-          onClick={handleForgetPassword}
-        >
-          Forget Password?
-        </Button>
-      </Grid>
+
     </Grid>
   );
 };

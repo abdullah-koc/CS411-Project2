@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, InputAdornment, Grid, Button } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import BadgeIcon from "@mui/icons-material/Badge";
 import Colors from "../utils/Color";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 const Register = () => {
+
+  useEffect(() => {
+    if (localStorage.getItem("userInfo")) {
+      navigate("/main")
+    }
+  }, [])
+
   let navigate = useNavigate();
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [approvePassword, setApprovePassword] = useState("");
@@ -26,7 +35,8 @@ const Register = () => {
 
   const handleRegisterButtonClick = () => {
     if (
-      fullName === "" ||
+      name === "" ||
+      surname === "" ||
       email === "" ||
       password === "" ||
       approvePassword === ""
@@ -39,8 +49,20 @@ const Register = () => {
     } else if (!isPasswordsSame(password, approvePassword)) {
       alert("Passwords are not the same!");
     }
-    else if(isPasswordsSame(password, approvePassword)){
-      navigate("/main");
+    else if (isPasswordsSame(password, approvePassword)) {
+      const info = {
+        name: name,
+        surname: surname,
+        email: email,
+        password: password,
+        photo: ""
+      }
+      axios.post("http://localhost:8080/auth/signUp", info)
+        .then(res => {
+          alert("Successfully registered.")
+          navigate("/login")
+        })
+        .catch(err => alert("Error"))
     }
   };
 
@@ -66,9 +88,26 @@ const Register = () => {
       <Grid item xs={12} style={{ marginTop: "4%" }}>
         <TextField
           style={{ width: "400px" }}
-          placeholder="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          color="warning"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <BadgeIcon />
+              </InputAdornment>
+            ),
+          }}
+          variant="standard"
+        />
+      </Grid>
+      <Grid item xs={12} style={{ marginTop: "4%" }}>
+        <TextField
+          style={{ width: "400px" }}
+          placeholder="Surname"
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
           color="warning"
           InputProps={{
             startAdornment: (
