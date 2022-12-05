@@ -22,6 +22,7 @@ const handleEmojies = () => {
   
 
 };
+
 const MessageSent = () => {
 
 };
@@ -48,7 +49,7 @@ const TextMessageBar = () => {
       </Grid>
 
       <Grid item xs={8}>
-        <FormControl sx={{ m: 1, width: '86ch' }} variant="outlined">
+        <FormControl sx={{ m: 1, width: '66ch' }} variant="outlined">
           <OutlinedInput
             id="outlined-adornment-weight"
             placeholder='Type a message'
@@ -56,12 +57,9 @@ const TextMessageBar = () => {
             inputProps={{
               'aria-label': 'weight',
             }}
-            style={{ borderRadius: "15px", backgroundColor: "white", height: "50px"}}
-            value={text}
-            onChange={(e)=> setText(e.target.value)}
-          />
-          
+            style={{ borderRadius: "15px", backgroundColor: "white", height: "50px", display: "flex", alignItems: "center", paddingLeft: "20px" }}
 
+          />
         </FormControl>
       </Grid>
       <Grid item xs={3}>

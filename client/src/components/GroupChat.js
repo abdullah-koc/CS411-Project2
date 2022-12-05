@@ -15,9 +15,21 @@ const useStyles = makeStyles({
   },
 });
 
+
+
+const handleCreateGroup = () => {
+  setMembers
+};
+
 const GroupChat = () => {
   const classes = useStyles();
 
+  const [members, setMembers] = useState([
+    {
+      name: "Murat Furkan Uğurlu",
+      ppUrl: "https://www.google.com",
+    }
+  ]);
   // mock data for now
   const [infos, setInfos] = useState([
     {
@@ -71,7 +83,7 @@ const GroupChat = () => {
     {
       name: "Murat Furkan Uğurlu",
       photo: "https://www.google.com",
-    },
+    }
 
 
   ]);
@@ -97,7 +109,7 @@ const GroupChat = () => {
               variant="contained"
               size="large"
               style={{ backgroundColor: green }}
-            //onClick={() =>}
+              onClick={() => handleCreateGroup()}
             >
               Create group
             </Button>
