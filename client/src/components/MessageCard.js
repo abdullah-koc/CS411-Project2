@@ -32,12 +32,17 @@ function initials(value){
   return result;
 }
 
+const handleUploadMessages = () => {
+  console.log("Upload Messages");
+  window.location.reload();
+};
+
 const MessageCard = ({ name, message, time, isIncoming, nonReadCount, ppUrl }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Grid container>
+      <Grid container style={{cursor:"pointer"}} onClick={() => handleUploadMessages()} >
         <Grid item xs={2}>
           {ppUrl ? (
             <AccountCircleIcon style={{ fontSize: "55px", marginLeft: "10px" }} />
