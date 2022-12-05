@@ -6,16 +6,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PeopleIcon from '@mui/icons-material/People';
 import ChatIcon from '@mui/icons-material/Chat';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MessageCard from "./MessageCard";
 
 const handleGroupChat = () => {
+  
+
 
 };
 
 const handleSendingPrivateMessage = () => {
-
-};
-
-const handeSettings = () => {
 
 };
 
@@ -36,7 +35,7 @@ const UserBar = () => {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={6}>
+        <Grid item xs={7}>
           <AccountCircleIcon style={{ fontSize: "45px", marginLeft: "10px" }} />
         </Grid>
         <Grid item xs={2}>
@@ -45,13 +44,9 @@ const UserBar = () => {
             onClick={() => handleGroupChat()} />
 
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <ChatIcon style={{ fontSize: "25px", marginTop: "10px", marginLeft: "50px" , cursor:"pointer" }}
             onClick={() => handleSendingPrivateMessage()} />
-        </Grid>
-        <Grid item xs={2}>
-          <MoreVertIcon style={{ fontSize: "25px", marginTop: "10px", marginLeft: "30px", cursor:"pointer" }}
-            onClick={() => handleSettings()} />
         </Grid>
       </Grid>
     </div>

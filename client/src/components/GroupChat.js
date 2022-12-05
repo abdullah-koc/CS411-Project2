@@ -15,71 +15,41 @@ const useStyles = makeStyles({
   },
 });
 
-const MessageBar = () => {
+const GroupChat = () => {
   const classes = useStyles();
 
   // mock data for now
-  const [name, photo] = useState([
+  const [infos, setInfos] = useState([
     {
       name: "Murat Furkan Uğurlu",
-      ppUrl: "https://www.google.com",
+      photo: "https://www.google.com",
     },
     {
       name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 4,
-      ppUrl: null,
+      photo: "https://www.google.com",
     },
     {
       name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 0,
-      ppUrl: null,
+      photo: "https://www.google.com",
     },
     {
       name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
+      photo: "https://www.google.com",
     },
     {
       name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 0,
-      ppUrl: "https://www.google.com",
+      photo: "https://www.google.com",
     },
     {
       name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
+      photo: "https://www.google.com",
     },
     {
       name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 1,
-      ppUrl: null,
+      photo: "https://www.google.com",
     },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 3,
-      ppUrl: null,
-    },
+
+    
   ]);
 
   return (
@@ -87,14 +57,10 @@ const MessageBar = () => {
       <Grid container>
         <Grid item xs={12}>
           <div style={{ height: "85vh", overflowY: "scroll" }}>
-            {messages.map((message) => (
+            {infos.map((info) => (
               <MessageCard
-                name={message.name}
-                message={message.message}
-                time={message.time}
-                isIncoming={message.isIncoming}
-                nonReadCount={message.nonReadCount}
-                ppUrl={message.ppUrl}
+                name={info.name}
+                photo={info.photo}
               />
             ))}
           </div>
@@ -104,4 +70,4 @@ const MessageBar = () => {
   );
 };
 
-export default MessageBar;
+export default GroupChat;
