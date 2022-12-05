@@ -31,7 +31,7 @@ const TextMessageBar = () => {
         </Grid>
         <Grid item xs={10}>
         <FormControl sx={{ m: 1, width: '76ch' }} variant="outlined">
-        <OutlinedInput
+          <OutlinedInput
             id="outlined-adornment-weight"
             placeholder='Type a message'  
             aria-describedby="outlined-weight-helper-text"

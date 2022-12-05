@@ -20,10 +20,17 @@ const Chats = () => {
   // mock data for now
   const [messages, setMessages] = useState([
     { message: "sslşdfsldf sdşlfsdşlgf dfşlgdflşg dfşgldfşlgkd dfşlgkdfşl ffgşlhkfgşlh dfşglhfgşlh şlhfgşh şglhkşlfgh dfgşldfg dfgşldkflşg dfşgl dşf dfgşl dşlfgdf dfşgl df dfglş şldfg", time: "12:00", isIncoming: true },
-    { message: "Hello World!", time: "12:00", isIncoming: false },
+    { message: "Rigght Side", time: "12:00", isIncoming: false },
     { message: "Hello World!", time: "12:00", isIncoming: true },
     { message: "Hello World!", time: "12:00", isIncoming: false },
     { message: "Hello World!", time: "12:00", isIncoming: true },
+    { message: "Hello World!", time: "12:00", isIncoming: false },
+    { message: "sslşdfsldf sdşlfsdşlgf dfşlgdflşg dfşgldfşlgkd dfşlgkdfşl ffgşlhkfgşlh dfşglhfgşlh şlhfgşh şglhkşlfgh dfgşldfg dfgşldkflşg dfşgl dşf dfgşl dşlfgdf dfşgl df dfglş şldfg", time: "12:00", isIncoming: true },
+    { message: "Hello World!", time: "12:00", isIncoming: true },
+    { message: "Hello World!", time: "12:00", isIncoming: true },
+    { message: "Hello World!", time: "12:00", isIncoming: false },
+    { message: "Hello World!", time: "12:00", isIncoming: true },
+    { message: "Hello World!", time: "12:00", isIncoming: false },
     { message: "Hello World!", time: "12:00", isIncoming: false },
     { message: "sslşdfsldf sdşlfsdşlgf dfşlgdflşg dfşgldfşlgkd dfşlgkdfşl ffgşlhkfgşlh dfşglhfgşlh şlhfgşh şglhkşlfgh dfgşldfg dfgşldkflşg dfşgl dşf dfgşl dşlfgdf dfşgl df dfglş şldfg", time: "12:00", isIncoming: true },
     { message: "Hello World!", time: "12:00", isIncoming: true },
@@ -36,12 +43,12 @@ const Chats = () => {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid>
-          <div style={{ height: "84vh", overflowY: "scroll" }}>
+        <Grid item xs={12}>
+          <div style={{ height: "84vh", overflowY: "scroll", width: "100%" }}>
             {messages.map((message) => {
               if (message.isIncoming) {
                 return (
-                  <div style={{ marginLeft: "20px", marginTop: "10px" }}>
+                  <div style={{ marginLeft: "3%", marginTop: "10px" }}>
                     <Message
                       message={message.message}
                       time={message.time}
@@ -52,7 +59,7 @@ const Chats = () => {
               }
               else {
                 return (
-                  <div style={{ marginLeft: "740px", marginTop: "10px" }}>
+                  <div style={{ marginTop: "10px", display: "flex", justifyContent: "flex-end", marginRight: "2%" }}>
                     <Message
                       message={message.message}
                       time={message.time}
