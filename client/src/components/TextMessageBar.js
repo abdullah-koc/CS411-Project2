@@ -29,6 +29,7 @@ const MessageSent = () => {
 const TextMessageBar = () => {
   
   const [isEmojiOpen, setIsEmojiOpen] = React.useState(false);
+  const [text, setText] = React.useState("")
 
   const classes = useStyles();
 
@@ -41,7 +42,7 @@ const TextMessageBar = () => {
         </Grid>
         {isEmojiOpen && (
           <Grid item xs={12} style={{ position: 'fixed', bottom: "60px", zIndex: "1000" }}>
-            <EmojiPicker />
+            <EmojiPicker onEmojiClick={(data) => setText(text + data.emoji)} />
           </Grid>
         )}
       </Grid>
@@ -56,7 +57,8 @@ const TextMessageBar = () => {
               'aria-label': 'weight',
             }}
             style={{ borderRadius: "15px", backgroundColor: "white", height: "50px"}}
-
+            value={text}
+            onChange={(e)=> setText(e.target.value)}
           />
           
 
@@ -70,4 +72,4 @@ const TextMessageBar = () => {
   )
 }
 
-export default TextMessageBar;
+export default TextMessageBar; 
