@@ -7,6 +7,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
+const handleEmojies = () => {
+
+};
+const MessageSent = () => {
+
+};
 const useStyles = makeStyles({
   root: {
     height: "8%",
@@ -19,7 +25,6 @@ const useStyles = makeStyles({
   },
 });
 
-
 const MessageScreenBar = () => {
 
   const classes = useStyles();
@@ -28,13 +33,15 @@ const MessageScreenBar = () => {
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={10}>
-          <AccountCircleIcon style={{fontSize: "45px", marginLeft: "10px"}}/>
+          <AccountCircleIcon style={{ fontSize: "45px", marginLeft: "10px", cursor: "pointer" }}
+            onClick={() => handleEmojies()} />
         </Grid>
         <Grid item xs={1}>
-          <SearchIcon style={{fontSize: "25px", marginTop: "10px", marginLeft: "60px"}}/>
+          <SearchIcon style={{ fontSize: "25px", marginTop: "10px", marginLeft: "60px" }} />
         </Grid>
         <Grid item xs={1}>
-          <MoreVertIcon style={{fontSize: "25px", marginTop: "10px", marginLeft: "40px"}}/>
+          <MoreVertIcon style={{ fontSize: "25px", marginTop: "10px", marginLeft: "50px" , cursor:"pointer" }}
+            onClick={() => MessageSent()} />
         </Grid>
       </Grid>
     </div>

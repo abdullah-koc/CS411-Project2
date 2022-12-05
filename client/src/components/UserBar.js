@@ -5,13 +5,9 @@ import { Grid } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PeopleIcon from '@mui/icons-material/People';
 import ChatIcon from '@mui/icons-material/Chat';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import MessageCard from "./MessageCard";
 
 const handleGroupChat = () => {
   
-
-
 };
 
 const handleSendingPrivateMessage = () => {
