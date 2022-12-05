@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid } from '@mui/material';
 import UserBar from '../components/UserBar';
 import { makeStyles } from "@mui/styles";
@@ -8,6 +8,9 @@ import SearchBar from '../components/SearchBar';
 import MessageScreenBar from '../components/MessageScreenBar';
 import TextMessageBar from '../components/TextMessageBar';
 import Chats from '../components/Chats';
+import Contacts from '../components/Contacts';
+import Common from '../Common';
+import GroupChat from '../components/GroupChat';
 
 
 const useStyles = makeStyles({
@@ -21,16 +24,21 @@ const useStyles = makeStyles({
   },
 });
 
+
 const MainScreen = () => {
 
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={4}>
           <UserBar />
           <SearchBar />
-          <MessageBar />
+          { (window.location.pathname === "/main/contacts") ? <Contacts /> : 
+            <>
+            { (window.location.pathname === "/main/group") ? <GroupChat /> : <MessageBar /> }
+            </> }
         </Grid>
         <Grid item xs={8}>
           <MessageScreenBar />

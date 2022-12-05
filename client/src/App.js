@@ -29,6 +29,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/main" element={<MainScreen />} />
+          <Route path="/main/contacts" element={<MainScreen />} />
+          <Route path="/main/messages" element={<MainScreen />} />
+          <Route path="/main/group" element={<MainScreen />} />
         </Routes>
       </div>
     </div>
