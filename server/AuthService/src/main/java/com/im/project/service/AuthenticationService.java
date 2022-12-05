@@ -31,7 +31,7 @@ public class AuthenticationService implements IAuthenticationService
         {
             return UserMapper.INSTANCE.convertToUserDto(user);
         }
-        return null;
+        throw new RuntimeException("Wrong password.");
     }
 
     @Override
