@@ -1,10 +1,7 @@
 package com.im.messaging.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "MESSAGES")
 @Getter
-@Setter
+@ToString
 public class Message
 {
     @Id
@@ -25,11 +22,13 @@ public class Message
     private User sender;
 
     @ManyToOne
-    private ChatGroup chatGroup;
+    private User receiver;
 
     @Column(name = "MESSAGE")
     private String message;
 
     @Column(name = "MESSAGE_DATE")
     private LocalDateTime messageDate;
+
+    private MessageStatus status;
 }

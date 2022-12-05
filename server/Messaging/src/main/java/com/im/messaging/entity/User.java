@@ -35,11 +35,4 @@ public class User
 
     @Column(name = "PHOTO")
     private String photo;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_group",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "chatgroup_id"))
-    Set<ChatGroup> userChatGroups;
 }

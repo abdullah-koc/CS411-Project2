@@ -32,6 +32,7 @@ function App() {
           <Route path="/main/contacts" element={<MainScreen />} />
           <Route path="/main/messages" element={<MainScreen />} />
           <Route path="/main/group" element={<MainScreen />} />
+          <Route path="*" element={<Login />} />
         </Routes>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import Colors from "../utils/Color";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PeopleIcon from "@mui/icons-material/People";
 import ChatIcon from "@mui/icons-material/Chat";
@@ -25,7 +25,7 @@ const UserBar = () => {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={7}>
+        <Grid item xs={4}>
           <AccountCircleIcon
             style={{ fontSize: "45px", marginLeft: "10px", cursor: "pointer", }}
             onClick={() => navigate("/main/messages")}
@@ -52,6 +52,15 @@ const UserBar = () => {
             }}
             onClick={() => navigate("/main/contacts")}
           />
+        </Grid>
+        <Grid item xs={2} style={{ display: "flex", alignItems: "center" }}>
+          <Button onClick={() => {
+            localStorage.clear()
+            navigate("/login")
+          }} variant="contained" color="error">Logout</Button>
+        </Grid>
+        <Grid item xs={1}>
+
         </Grid>
       </Grid>
     </div>
