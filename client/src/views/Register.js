@@ -34,10 +34,13 @@ const Register = () => {
       alert("Please fill all the fields");
     } else if (!isPasswordValid(password)) {
       alert(
-        "Password should be at least 8 characters long and contain at least one number and one capital letter"
+        "Password should be at least 8 characters long and contain at least one number, one capital letter, and one special letter"
       );
     } else if (!isPasswordsSame(password, approvePassword)) {
       alert("Passwords are not the same!");
+    }
+    else if(isPasswordsSame(password, approvePassword)){
+      navigate("/main");
     }
   };
 
@@ -52,15 +55,15 @@ const Register = () => {
         item
         xs={12}
         style={{
-          marginTop: "13%",
-          fontSize: "1.4rem",
+          marginTop: "10.5%",
+          fontSize: "2.5rem",
           fontWeight: "bold",
           color: Colors.primary_color,
         }}
       >
-        Register
+        ITextU Registration
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "3%" }}>
+      <Grid item xs={12} style={{ marginTop: "4%" }}>
         <TextField
           style={{ width: "400px" }}
           placeholder="Full Name"
@@ -77,7 +80,7 @@ const Register = () => {
           variant="standard"
         />
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "3%" }}>
+      <Grid item xs={12} style={{ marginTop: "3.5%" }}>
         <TextField
           style={{ width: "400px" }}
           placeholder="Email"
@@ -94,7 +97,7 @@ const Register = () => {
           variant="standard"
         />
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "3%" }}>
+      <Grid item xs={12} style={{ marginTop: "3.5%" }}>
         <TextField
           style={{ width: "400px" }}
           placeholder="Password"
@@ -112,7 +115,7 @@ const Register = () => {
           variant="standard"
         />
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "3%" }}>
+      <Grid item xs={12} style={{ marginTop: "3.5%" }}>
         <TextField
           style={{ width: "400px" }}
           placeholder="Approve Password"
@@ -130,12 +133,14 @@ const Register = () => {
           variant="standard"
         />
       </Grid>
-      <Grid item xs={4} style={{ marginTop: "3%" }}>
+
+      <Grid item xs={12} style={{ marginTop: "3.5%" }}>
         <Button
           variant="contained"
           size="large"
           style={{ backgroundColor: Colors.primary_color }}
           onClick={() => handleRegisterButtonClick()}
+
         >
           Register
         </Button>
