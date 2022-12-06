@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   root: {
     height: "100vh",
     width: "100%",
-    background: Colors.primary_light,
+    background: Colors.primary_dark,
     display: "flex",
     color: "white",
     borderTop: "1px solid #819CA9",
@@ -43,13 +43,13 @@ const useStyles = makeStyles({
   },
 });
 
-var stompClient = null;
+var stomp = null;
 
 const MainScreen = () => {
 
   const location = useLocation();
   const classes = useStyles();
-  const [privateChats, setPrivateChats] = useState(new Map());
+  const [chatMessages, setChatMessages] = useState(new Map());
   const [publicChats, setPublicChats] = useState();
   const [isEmojiOpen, setIsEmojiOpen] = React.useState(false);
   const [text, setText] = React.useState("")
@@ -68,42 +68,31 @@ const MainScreen = () => {
 
   React.useEffect(() => {
     setCurUser(getId())
-    axios.get("http://localhost:8082/messaging/get/" + JSON.parse(localStorage.getItem("userInfo")).id + "/" + curUser).then((response) => {
-      console.log(new Map(response.data))
-    }).catch((error) => {
-      console.log(error)
-    })
   }, [location]);
-
-
-
-
 
   React.useEffect(() => {
     let Sock = new SockJS('http://localhost:8082/ws');
-    stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
+    stomp = over(Sock);
+    stomp.connect({}, onConnected, onError);
   }, [])
 
   const onConnected = () => {
-    stompClient.subscribe('/chatroom/public', onMessageReceived);
-    stompClient.subscribe('/user/' + JSON.parse(localStorage.getItem("userInfo")).id + '/private', onPrivateMessage);
+    stomp.subscribe('/chatroom/public', onMessageReceived);
+    stomp.subscribe('/user/' + JSON.parse(localStorage.getItem("userInfo")).id + '/private', privMsgReceived);
     userJoin();
   }
 
-  const onPrivateMessage = (payload) => {
+  const privMsgReceived = (payload) => {
     var payloadData = JSON.parse(payload.body);
-    if (privateChats.get(payloadData.sender.id.toString())) {
-      privateChats.get(payloadData.sender.id.toString()).push(payloadData);
-      console.log("pulled")
-      setPrivateChats(new Map(privateChats));
+    if (chatMessages.get(payloadData.sender.id.toString())) {
+      chatMessages.get(payloadData.sender.id.toString()).push(payloadData);
+      setChatMessages(new Map(chatMessages));
     } else {
       let list = [];
       list.push(payloadData);
-      console.log("pulled")
 
-      privateChats.set(payloadData.sender.id.toString(), list);
-      setPrivateChats(new Map(privateChats));
+      chatMessages.set(payloadData.sender.id.toString(), list);
+      setChatMessages(new Map(chatMessages));
     }
   }
 
@@ -114,16 +103,16 @@ const MainScreen = () => {
       sender: JSON.parse(localStorage.getItem("userInfo")),
       status: "JOINED"
     };
-    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    stomp.send("/app/message", {}, JSON.stringify(chatMessage));
   }
 
   const onMessageReceived = (payload) => {
     var payloadData = JSON.parse(payload.body);
     switch (payloadData.status) {
       case "JOINED":
-        if (!privateChats.get(payloadData.sender.id.toString())) {
-          privateChats.set(payloadData.sender.id.toString(), []);
-          setPrivateChats(new Map(privateChats));
+        if (!chatMessages.get(payloadData.sender.id.toString())) {
+          chatMessages.set(payloadData.sender.id.toString(), []);
+          setChatMessages(new Map(chatMessages));
         }
         break;
       case "MESSAGED":
@@ -134,8 +123,8 @@ const MainScreen = () => {
   }
 
 
-  const sendPrivateValue = () => {
-    if (stompClient) {
+  const sendPrivMsg = () => {
+    if (stomp) {
       axios.get("http://localhost:8080/auth/" + getId()).then(res => {
         var chatMessage = {
           sender: JSON.parse(localStorage.getItem("userInfo")),
@@ -144,10 +133,10 @@ const MainScreen = () => {
           message: text,
           status: "MESSAGED"
         };
-        privateChats.get(getId().toString()).push(chatMessage);
-        setPrivateChats(new Map(privateChats));
-        console.log("pushed")
-        stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+        chatMessages.get(getId().toString()).push(chatMessage);
+        setChatMessages(new Map(chatMessages));
+        stomp.send("/app/private-message", {}, JSON.stringify(chatMessage));
+        setText("");
       })
 
     }
@@ -161,81 +150,89 @@ const MainScreen = () => {
           <SearchBar />
           {(window.location.pathname === "/main/contacts") ? <Contacts /> :
             <>
-              {(window.location.pathname === "/main/group") ? <GroupChat /> : <MessageBar chats={privateChats} />}
+              {(window.location.pathname === "/main/group") ? <GroupChat /> : <MessageBar chats={chatMessages} />}
             </>}
         </Grid>
         <Grid item xs={8}>
-          <MessageScreenBar id={curUser} />
-
+          {curUser !== "main" && (
+            <MessageScreenBar id={curUser} />
+          )}
 
           <div className={classes.rootchats}>
-            <Grid container>
-              <Grid item xs={12}>
-                <div style={{ height: "84vh", overflowY: "scroll", width: "100%" }}>
-                  {privateChats.get(curUser) && [...new Set(privateChats.get(curUser))].map((chat, index) => {
-                    if (chat.sender.id !== JSON.parse(localStorage.getItem("userInfo")).id) {
-                      return (
-                        <div style={{ marginTop: "10px", marginLeft: "3%" }}>
-                          <Message key={index} message={chat.message} time={getHourMinute(new Date().getHours()) + ":" + getHourMinute(new Date().getMinutes())} />
-                        </div>
-                      )
-                    }
-                    else {
-                      return (
-                        <div style={{ marginTop: "10px", display: "flex", justifyContent: "flex-end", marginRight: "3%" }}>
-                          <Message key={index} message={chat.message} isIncoming={true} time={getHourMinute(new Date().getHours()) + ":" + getHourMinute(new Date().getMinutes())} />
-                        </div>
+            {curUser !== "main" && (
+              <>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <div style={{ height: "84vh", overflowY: "scroll", width: "100%" }}>
+                      {chatMessages.get(curUser) && chatMessages.get(curUser).filter((value, index, self) =>
+                        index === self.findIndex((t) => (
+                          t.message === value.message
+                        ))
+                      ).map((chat, index) => {
+                        if (chat.sender.id !== JSON.parse(localStorage.getItem("userInfo")).id) {
+                          return (
+                            <div style={{ marginTop: "10px", marginLeft: "3%" }}>
+                              <Message key={index} message={chat.message} time={getHourMinute(new Date().getHours()) + ":" + getHourMinute(new Date().getMinutes())} />
+                            </div>
+                          )
+                        }
+                        else {
+                          return (
+                            <div style={{ marginTop: "10px", display: "flex", justifyContent: "flex-end", marginRight: "3%" }}>
+                              <Message key={index} message={chat.message} isIncoming={true} time={getHourMinute(new Date().getHours()) + ":" + getHourMinute(new Date().getMinutes())} />
+                            </div>
 
-                      )
-                    }
-                  })}
-                </div>
-              </Grid>
-            </Grid>
-
-            <div className={classes.rootsend}>
-              <Grid container>
-                <Grid item xs={1}>
-                  <EmojiEmotionsIcon style={{ fontSize: "35px", marginLeft: "20px", marginTop: "15px", cursor: "pointer" }}
-                    onClick={() => setIsEmojiOpen(!isEmojiOpen)} />
-                </Grid>
-                {isEmojiOpen && (
-                  <Grid item xs={12} style={{ position: 'fixed', bottom: "60px", zIndex: "1000" }}>
-                    <EmojiPicker onEmojiClick={(data) => setText(text + data.emoji)} />
+                          )
+                        }
+                      })}
+                    </div>
                   </Grid>
-                )}
-              </Grid>
+                </Grid>
 
-              <Grid item xs={8}>
-                <FormControl sx={{ m: 1, width: '66ch' }} variant="outlined">
-                  <OutlinedInput
-                    id="outlined-adornment-weight"
-                    placeholder='Type a message'
-                    aria-describedby="outlined-weight-helper-text"
-                    inputProps={{
-                      'aria-label': 'weight',
-                    }}
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    style={{ borderRadius: "15px", backgroundColor: "white", height: "50px", display: "flex", alignItems: "center", paddingLeft: "20px" }}
+                <div className={classes.rootsend} >
+                  <Grid container>
+                    <Grid item xs={1}>
+                      <EmojiEmotionsIcon style={{ fontSize: "35px", marginLeft: "20px", marginTop: "15px", cursor: "pointer" }}
+                        onClick={() => setIsEmojiOpen(!isEmojiOpen)} />
+                    </Grid>
+                    {isEmojiOpen && (
+                      <Grid item xs={12} style={{ position: 'fixed', bottom: "60px", zIndex: "1000" }}>
+                        <EmojiPicker onEmojiClick={(data) => setText(text + data.emoji)} />
+                      </Grid>
+                    )}
+                  </Grid>
 
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={3}>
-                <SendIcon style={{ fontSize: "35px", marginLeft: "40px", marginTop: "15px", cursor: "pointer" }}
-                  onClick={() => sendPrivateValue()} />
-              </Grid>
-            </div >
+                  <Grid item xs={8}>
+                    <FormControl sx={{ m: 1, width: '66ch' }} variant="outlined">
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        placeholder='Type a message'
+                        aria-describedby="outlined-weight-helper-text"
+                        inputProps={{
+                          'aria-label': 'weight',
+                        }}
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        style={{ borderRadius: "15px", backgroundColor: "white", height: "50px", display: "flex", alignItems: "center", paddingLeft: "20px" }}
+
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <SendIcon style={{ fontSize: "35px", marginLeft: "40px", marginTop: "15px", cursor: "pointer" }}
+                      onClick={() => sendPrivMsg()} />
+                  </Grid>
+                </div >
+              </>
+            )}
+            {curUser === "main" && (
+              <div style={{ height: "100%", width: "100%" }}>
+                <div style={{ fontSize: "30px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  Please select a chat to start messaging
+                </div>
+              </div>
+            )}
           </div>
-
-
-
-
-
-
-
-
         </Grid>
       </Grid>
     </div>

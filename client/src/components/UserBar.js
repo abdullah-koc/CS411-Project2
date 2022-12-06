@@ -43,7 +43,10 @@ const UserBar = () => {
             {initials(user.name + " " + user.surname)}
           </Box>
         </Grid>
-        <Grid item xs={8} style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "5%" }}>
+        <Grid item xs={4} style={{ display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Oxygen, sans-serif", fontSize: "24px" }}>
+          ITextU
+        </Grid>
+        <Grid item xs={4} style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "5%" }}>
           <Button onClick={() => {
             localStorage.clear()
             navigate("/login")
