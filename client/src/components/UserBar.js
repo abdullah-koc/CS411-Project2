@@ -23,6 +23,7 @@ const UserBar = () => {
   const navigate = useNavigate();
 
   return (
+
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={4}>

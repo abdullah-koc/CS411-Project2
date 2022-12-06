@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "MESSAGES")
 @Getter
+@Setter
 @ToString
 public class Message
 {

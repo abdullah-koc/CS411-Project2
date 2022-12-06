@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Message = ({message, time, isIncoming}) => {
+const Message = ({ message, time }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -26,7 +26,7 @@ const Message = ({message, time, isIncoming}) => {
         <Grid item xs={10}>
           {message}
         </Grid>
-        <Grid item xs={2} style={{fontSize: "10px"}}>
+        <Grid item xs={2} style={{ fontSize: "10px" }}>
           {time}
         </Grid>
       </Grid>

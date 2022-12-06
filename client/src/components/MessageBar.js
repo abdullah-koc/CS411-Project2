@@ -15,168 +15,33 @@ const useStyles = makeStyles({
   },
 });
 
-const MessageBar = () => {
+const MessageBar = ({ chats }) => {
   const classes = useStyles();
-
-  // mock data for now
-  const [messages, setMessages] = useState([
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 2,
-      ppUrl: "https://www.google.com",
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 4,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 0,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 0,
-      ppUrl: "https://www.google.com",
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 1,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 3,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 1,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 3,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 1,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 3,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 0,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: true,
-      nonReadCount: 1,
-      ppUrl: null,
-    },
-    {
-      name: "Murat Furkan Uğurlu",
-      message: "Hello World!",
-      time: "12:00",
-      isIncoming: false,
-      nonReadCount: 3,
-      ppUrl: null,
-    },
-  ]);
+  const [messages, setMessages] = React.useState(new Map());
+  React.useEffect(() => {
+    setMessages(chats)
+  }, [chats])
 
   return (
-    <div className={classes.root}>
+
+    < div className={classes.root} >
       <Grid container>
         <Grid item xs={12}>
           <div style={{ height: "85vh", overflowY: "scroll" }}>
-            {messages.map((message) => (
+            {console.log(chats)}
+            {[...messages.keys()].map((name, index) => (
               <MessageCard
-                name={message.name}
-                message={message.message}
-                time={message.time}
-                isIncoming={message.isIncoming}
-                nonReadCount={message.nonReadCount}
-                ppUrl={message.ppUrl}
+                key={index}
+                name={name}
+                time={new Date().getHours().toString() + ":" + new Date().getMinutes().toString()}
+                nonReadCount={0}
+                ppUrl={""}
               />
             ))}
           </div>
         </Grid>
       </Grid>
-    </div>
+    </div >
   );
 };
 
