@@ -205,7 +205,7 @@ const MainScreen = () => {
                   <Grid item xs={8}>
                     <FormControl sx={{ m: 1, width: '66ch' }} variant="outlined">
                       <OutlinedInput
-                        id="outlined-adornment-weight"
+                        id="messageInput"
                         placeholder='Type a message'
                         aria-describedby="outlined-weight-helper-text"
                         inputProps={{
@@ -220,7 +220,7 @@ const MainScreen = () => {
                   </Grid>
                   <Grid item xs={3}>
                     <SendIcon style={{ fontSize: "35px", marginLeft: "40px", marginTop: "15px", cursor: "pointer" }}
-                      onClick={() => sendPrivMsg()} />
+                      onClick={() => sendPrivMsg()} id="sendIcon" />
                   </Grid>
                 </div >
               </>
