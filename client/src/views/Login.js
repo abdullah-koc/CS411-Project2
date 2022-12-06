@@ -30,7 +30,7 @@ const Login = () => {
       axios.post("http://localhost:8080/auth/login", info)
         .then(res => {
           localStorage.setItem("userInfo", JSON.stringify(res.data))
-          alert("Successfully logged in")
+         
           navigate("/main")
         })
         .catch(err => alert("Wrong username or password"))

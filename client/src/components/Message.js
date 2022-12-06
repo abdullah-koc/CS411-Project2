@@ -23,7 +23,7 @@ const Message = ({ message, time }) => {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={10}>
+        <Grid item xs={10} id="chatIcon">
           {message}
         </Grid>
         <Grid item xs={2} style={{ fontSize: "10px" }}>

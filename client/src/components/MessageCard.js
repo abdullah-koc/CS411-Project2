@@ -39,7 +39,7 @@ const MessageCard = ({ user, message, time, nonReadCount, ppUrl }) => {
   const navigate = useNavigate();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="messageCard">
       <Grid container style={{ cursor: "pointer" }} onClick={() => navigate(user.id.toString())} >
         <Grid item xs={2}>
           {ppUrl ? (
