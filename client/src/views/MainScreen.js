@@ -68,8 +68,10 @@ const MainScreen = () => {
 
   React.useEffect(() => {
     setCurUser(getId())
-    axios.get("http://localhost:8082/messaging/get/" + JSON.parse(localStorage.getItem("userInfo")).id + "/" + curUser).then((response) => {
-      console.log(new Map(response.data))
+    console.log("dfhgdhgdhdfhd", JSON.parse(localStorage.getItem("userInfo")).id, "/" + getId())
+    axios.get("http://localhost:8082/messaging/get/" + JSON.parse(localStorage.getItem("userInfo")).id + "/" + getId()).then((response) => {
+      console.log(response.data)
+      setChatHistory(response.data)
     }).catch((error) => {
       console.log(error)
     })

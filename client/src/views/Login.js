@@ -69,6 +69,7 @@ const Login = () => {
               </InputAdornment>
             ),
           }}
+          id="email"
           variant="standard"
         />
       </Grid>
@@ -88,6 +89,7 @@ const Login = () => {
               </InputAdornment>
             ),
           }}
+          id="password"
           variant="standard"
         />
       </Grid>
@@ -98,6 +100,7 @@ const Login = () => {
             size="large"
             style={{ backgroundColor: Colors.primary_color }}
             onClick={handleLogin}
+            id="loginButton"
           >
             Login
           </Button>
