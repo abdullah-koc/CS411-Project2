@@ -99,6 +99,7 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
+          id="name"
           variant="standard"
         />
       </Grid>
@@ -116,6 +117,7 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
+          id="surname"
           variant="standard"
         />
       </Grid>
@@ -133,6 +135,7 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
+          id="email"
           variant="standard"
         />
       </Grid>
@@ -151,6 +154,7 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
+          id="password"
           variant="standard"
         />
       </Grid>
@@ -169,6 +173,7 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
+          id="approvePassword"
           variant="standard"
         />
       </Grid>
@@ -179,6 +184,7 @@ const Register = () => {
           size="large"
           style={{ backgroundColor: Colors.primary_color }}
           onClick={() => handleRegisterButtonClick()}
+          id="registerButton"
 
         >
           Register

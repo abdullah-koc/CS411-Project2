@@ -6,6 +6,7 @@ import Colors from "../utils/Color";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 const Login = () => {
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -16,13 +17,6 @@ const Login = () => {
       navigate("/main")
     }
   }, [])
-
-  const handleForgetPassword = () => {
-    if (email === "") {
-      alert("Please enter your email");
-      return;
-    }
-  };
 
   const handleLogin = () => {
     if (email === "" || password === "") {
@@ -53,8 +47,8 @@ const Login = () => {
         item
         xs={12}
         style={{
-          marginTop: "16%",
-          fontSize: "1.4rem",
+          marginTop: "10%",
+          fontSize: "2.8rem",
           fontWeight: "bold",
           color: Colors.primary_color,
         }}
@@ -75,6 +69,7 @@ const Login = () => {
               </InputAdornment>
             ),
           }}
+          id="email"
           variant="standard"
         />
       </Grid>
@@ -94,6 +89,7 @@ const Login = () => {
               </InputAdornment>
             ),
           }}
+          id="password"
           variant="standard"
         />
       </Grid>
@@ -104,6 +100,7 @@ const Login = () => {
             size="large"
             style={{ backgroundColor: Colors.primary_color }}
             onClick={handleLogin}
+            id="loginButton"
           >
             Login
           </Button>
