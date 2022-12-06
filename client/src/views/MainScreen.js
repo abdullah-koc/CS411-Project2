@@ -6,7 +6,6 @@ import Colors from "../utils/Color";
 import MessageBar from '../components/MessageBar';
 import SearchBar from '../components/SearchBar';
 import MessageScreenBar from '../components/MessageScreenBar';
-import Chats from '../components/Chats';
 import Contacts from '../components/Contacts';
 import Common from '../Common';
 import GroupChat from '../components/GroupChat';
@@ -14,8 +13,10 @@ import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiPicker from 'emoji-picker-react';
+import { useLocation } from 'react-router-dom';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import Message from '../components/Message';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -46,30 +47,36 @@ var stompClient = null;
 
 const MainScreen = () => {
 
+  const location = useLocation();
   const classes = useStyles();
   const [privateChats, setPrivateChats] = useState(new Map());
   const [publicChats, setPublicChats] = useState();
   const [isEmojiOpen, setIsEmojiOpen] = React.useState(false);
   const [text, setText] = React.useState("")
   const [curUser, setCurUser] = React.useState("")
+  const [chatHistory, setChatHistory] = React.useState([])
 
 
+  const getHourMinute = (info) => {
+    return String(info).padStart(2, '0');
+  }
 
-  const getName = () => {
+  const getId = () => {
     let link = window.location.href.split('/')
     return link[link.length - 1]
   }
 
   React.useEffect(() => {
-    setCurUser(getName())
-    //re render whole component
+    setCurUser(getId())
+    axios.get("http://localhost:8082/messaging/get/" + JSON.parse(localStorage.getItem("userInfo")).id + "/" + curUser).then((response) => {
+      console.log(new Map(response.data))
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [location]);
 
-  }, [getName()])
 
 
-  React.useEffect(() => {
-
-  }, [privateChats])
 
 
   React.useEffect(() => {
@@ -80,21 +87,22 @@ const MainScreen = () => {
 
   const onConnected = () => {
     stompClient.subscribe('/chatroom/public', onMessageReceived);
-    stompClient.subscribe('/user/' + JSON.parse(localStorage.getItem("userInfo")).name + '/private', onPrivateMessage);
+    stompClient.subscribe('/user/' + JSON.parse(localStorage.getItem("userInfo")).id + '/private', onPrivateMessage);
     userJoin();
   }
 
   const onPrivateMessage = (payload) => {
     var payloadData = JSON.parse(payload.body);
-    if (privateChats.get(payloadData.sender.name)) {
-      console.log("entered")
-      privateChats.get(payloadData.sender.name).push(payloadData);
+    if (privateChats.get(payloadData.sender.id.toString())) {
+      privateChats.get(payloadData.sender.id.toString()).push(payloadData);
+      console.log("pulled")
       setPrivateChats(new Map(privateChats));
     } else {
-      console.log("zort")
       let list = [];
       list.push(payloadData);
-      privateChats.set(payloadData.sender.name, list);
+      console.log("pulled")
+
+      privateChats.set(payloadData.sender.id.toString(), list);
       setPrivateChats(new Map(privateChats));
     }
   }
@@ -113,8 +121,8 @@ const MainScreen = () => {
     var payloadData = JSON.parse(payload.body);
     switch (payloadData.status) {
       case "JOINED":
-        if (!privateChats.get(payloadData.sender.name)) {
-          privateChats.set(payloadData.sender.name, []);
+        if (!privateChats.get(payloadData.sender.id.toString())) {
+          privateChats.set(payloadData.sender.id.toString(), []);
           setPrivateChats(new Map(privateChats));
         }
         break;
@@ -128,15 +136,20 @@ const MainScreen = () => {
 
   const sendPrivateValue = () => {
     if (stompClient) {
-      var chatMessage = {
-        sender: JSON.parse(localStorage.getItem("userInfo")),
-        receiver: { name: getName() },
-        message: text,
-        status: "MESSAGED"
-      };
-      privateChats.get(getName()).push(chatMessage);
-      setPrivateChats(new Map(privateChats));
-      stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+      axios.get("http://localhost:8080/auth/" + getId()).then(res => {
+        var chatMessage = {
+          sender: JSON.parse(localStorage.getItem("userInfo")),
+          receiver: res.data,
+          messageDate: new Date(),
+          message: text,
+          status: "MESSAGED"
+        };
+        privateChats.get(getId().toString()).push(chatMessage);
+        setPrivateChats(new Map(privateChats));
+        console.log("pushed")
+        stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+      })
+
     }
   }
 
@@ -152,26 +165,25 @@ const MainScreen = () => {
             </>}
         </Grid>
         <Grid item xs={8}>
-          <MessageScreenBar />
+          <MessageScreenBar id={curUser} />
 
 
           <div className={classes.rootchats}>
             <Grid container>
               <Grid item xs={12}>
                 <div style={{ height: "84vh", overflowY: "scroll", width: "100%" }}>
-                  {console.log(privateChats)}
-                  {privateChats.get(getName()) && privateChats.get(getName()).map((chat, index) => {
-                    if (chat.sender.name !== JSON.parse(localStorage.getItem("userInfo")).name) {
+                  {privateChats.get(curUser) && [...new Set(privateChats.get(curUser))].map((chat, index) => {
+                    if (chat.sender.id !== JSON.parse(localStorage.getItem("userInfo")).id) {
                       return (
                         <div style={{ marginTop: "10px", marginLeft: "3%" }}>
-                          <Message key={index} message={chat.message} />
+                          <Message key={index} message={chat.message} time={getHourMinute(new Date().getHours()) + ":" + getHourMinute(new Date().getMinutes())} />
                         </div>
                       )
                     }
                     else {
                       return (
-                        <div style={{ marginTop: "10px", display: "flex", justifyContent: "flex-end" }}>
-                          <Message key={index} message={chat.message} isIncoming={true} />
+                        <div style={{ marginTop: "10px", display: "flex", justifyContent: "flex-end", marginRight: "3%" }}>
+                          <Message key={index} message={chat.message} isIncoming={true} time={getHourMinute(new Date().getHours()) + ":" + getHourMinute(new Date().getMinutes())} />
                         </div>
 
                       )

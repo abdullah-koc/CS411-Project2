@@ -30,7 +30,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/main" element={<MainScreen />} />
           <Route path="/main/contacts" element={<MainScreen />} />
-          <Route path="/main/messages" element={<MainScreen />} />
           <Route path="/main/group" element={<MainScreen />} />
           <Route path="/main/*" element={<MainScreen />} />
           <Route path="*" element={<Login />} />

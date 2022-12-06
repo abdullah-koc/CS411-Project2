@@ -34,24 +34,24 @@ function initials(value) {
   return result;
 }
 
-const MessageCard = ({ name, message, time, nonReadCount, ppUrl }) => {
+const MessageCard = ({ user, message, time, nonReadCount, ppUrl }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   return (
     <div className={classes.root}>
-      <Grid container style={{ cursor: "pointer" }} onClick={() => navigate(name)} >
+      <Grid container style={{ cursor: "pointer" }} onClick={() => navigate(user.id.toString())} >
         <Grid item xs={2}>
           {ppUrl ? (
             <AccountCircleIcon style={{ fontSize: "55px", marginLeft: "10px" }} />
           ) : (
             <Box sx={{ ...shapeStyles, ...shapeCircleStyles }} style={{ marginLeft: "13px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {initials(name)}
+              {initials(user.name + " " + user.surname)}
             </Box>
           )}
         </Grid>
         <Grid item xs={8}>
-          <div style={{ fontWeight: "bold", marginTop: "10px" }}>{name}</div>
+          <div style={{ fontWeight: "bold", marginTop: "10px" }}>{user.name + " " + user.surname}</div>
 
         </Grid>
         <Grid item xs={1}>

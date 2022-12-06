@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import Colors from "../utils/Color";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PeopleIcon from "@mui/icons-material/People";
 import ChatIcon from "@mui/icons-material/Chat";
@@ -21,47 +21,33 @@ const useStyles = makeStyles({
 const UserBar = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [user, setUser] = React.useState(JSON.parse(localStorage.getItem("userInfo")));
+  const shapeStyles = { bgcolor: 'primary.main', width: 47, height: 47 };
+  const shapeCircleStyles = { borderRadius: '50%' };
+  function initials(value) {
+    var result = "";
+    var tokens = value.split(/\s/);
+    for (var i = 0; i < tokens.length; i++) {
+      result += tokens[i].substring(0, 1).toUpperCase();
+    }
+    return result;
+  }
+
 
   return (
 
     <div className={classes.root}>
       <Grid container>
         <Grid item xs={4}>
-          <AccountCircleIcon
-            style={{ fontSize: "45px", marginLeft: "10px", cursor: "pointer", }}
-            onClick={() => navigate("/main/messages")}
-          />
+          <Box sx={{ ...shapeStyles, ...shapeCircleStyles }} style={{ marginLeft: "13px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {initials(user.name + " " + user.surname)}
+          </Box>
         </Grid>
-        <Grid item xs={2}>
-          <PeopleIcon
-            style={{
-              fontSize: "25px",
-              marginTop: "10px",
-              marginLeft: "50px",
-              cursor: "pointer",
-            }}
-            onClick={() => navigate("/main/group")}
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <ChatIcon
-            style={{
-              fontSize: "25px",
-              marginTop: "10px",
-              marginLeft: "50px",
-              cursor: "pointer",
-            }}
-            onClick={() => navigate("/main/contacts")}
-          />
-        </Grid>
-        <Grid item xs={2} style={{ display: "flex", alignItems: "center" }}>
+        <Grid item xs={8} style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "5%" }}>
           <Button onClick={() => {
             localStorage.clear()
             navigate("/login")
           }} variant="contained" color="error">Logout</Button>
-        </Grid>
-        <Grid item xs={1}>
-
         </Grid>
       </Grid>
     </div>

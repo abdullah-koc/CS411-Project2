@@ -2,7 +2,6 @@ package com.im.project.service;
 
 import com.im.project.converter.UserMapper;
 import com.im.project.dao.UserDao;
-import com.im.project.dto.UserDto;
 import com.im.project.dto.UserLoginDto;
 import com.im.project.dto.UserSignupDto;
 import com.im.project.entity.User;
@@ -20,7 +19,7 @@ public class AuthenticationService implements IAuthenticationService
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDto login(UserLoginDto userLoginDto)
+    public User login(UserLoginDto userLoginDto)
     {
         User user = userDao.findByEmail(userLoginDto.getEmail());
         if(Objects.isNull(user))
@@ -29,13 +28,13 @@ public class AuthenticationService implements IAuthenticationService
         }
         if(bCryptPasswordEncoder.matches(userLoginDto.getPassword(), user.getPassword()))
         {
-            return UserMapper.INSTANCE.convertToUserDto(user);
+            return user;
         }
         throw new RuntimeException("Wrong password.");
     }
 
     @Override
-    public UserDto signUp(UserSignupDto userSignupDto)
+    public User signUp(UserSignupDto userSignupDto)
     {
         User existingUser = userDao.findByEmail(userSignupDto.getEmail());
         if(!Objects.isNull(existingUser))
@@ -45,7 +44,14 @@ public class AuthenticationService implements IAuthenticationService
         User user = UserMapper.INSTANCE.convertToUser(userSignupDto);
         String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
-        return UserMapper.INSTANCE.convertToUserDto(userDao.save(user));
+        userDao.save(user);
+        return user;
+    }
+
+    @Override
+    public User getUser(Long id)
+    {
+        return userDao.findById(id).orElseThrow();
     }
 
 

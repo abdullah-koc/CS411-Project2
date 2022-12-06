@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import Colors from "../utils/Color";
 import MessageCard from "./MessageCard";
 import { Grid } from "@mui/material";
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -17,9 +18,17 @@ const useStyles = makeStyles({
 
 const MessageBar = ({ chats }) => {
   const classes = useStyles();
-  const [messages, setMessages] = React.useState(new Map());
+
+  const [users, setUsers] = useState([])
   React.useEffect(() => {
-    setMessages(chats)
+    const requests = [];
+    [...chats.keys()].map(chat => requests.push(axios.get(`http://localhost:8080/auth/${chat}`)))
+    axios.all(requests).then(axios.spread((...responses) => {
+      const users = []
+      responses.map(response => users.push(response.data))
+      setUsers(users)
+    }))
+    console.log(users)
   }, [chats])
 
   return (
@@ -28,11 +37,11 @@ const MessageBar = ({ chats }) => {
       <Grid container>
         <Grid item xs={12}>
           <div style={{ height: "85vh", overflowY: "scroll" }}>
-            {console.log(chats)}
-            {[...messages.keys()].map((name, index) => (
+            {users.map((user, index) => (
+              user.name !== JSON.parse(localStorage.getItem("userInfo")).name &&
               <MessageCard
                 key={index}
-                name={name}
+                user={user}
                 time={new Date().getHours().toString() + ":" + new Date().getMinutes().toString()}
                 nonReadCount={0}
                 ppUrl={""}

@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     paddingLeft: '10px',
     paddingRight: '10px',
     width: "200px",
-    background: "red",
+    background: "#00ACC1",
     display: "flex",
     alignItems: "center",
     color: "white",
